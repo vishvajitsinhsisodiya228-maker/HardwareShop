@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bharat Hardware Mart - Products</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem auto; max-width: 640px; padding: 0 1rem; color: #222; }
+        li { margin: 0.4rem 0; }
+    </style>
+</head>
+<body>
+    <h1>Bharat Hardware Mart - Products</h1>
+    <ul id="productList"></ul>
+
+    <script>
+        const list = document.getElementById("productList");
+
+        function showError() {
+            list.innerHTML = "";
+            const li = document.createElement("li");
+            li.textContent = "Could not load products";
+            list.appendChild(li);
+        }
+
+        fetch("http://localhost:8085/api/products")
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+                return response.json();
+            })
+            .then(function (products) {
+                list.innerHTML = "";
+                products.forEach(function (p) {
+                    const li = document.createElement("li");
+                    li.textContent = p.productName + " | " + p.category + " | ₹" + p.unitPrice;
+                    list.appendChild(li);
+                });
+            })
+            .catch(showError);
+    </script>
+</body>
+</html>

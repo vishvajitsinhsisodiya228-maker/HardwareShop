@@ -1,0 +1,12 @@
+target/
+build/
+dist/
+node_modules/
+*.class
+*.log
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
+.DS_Store

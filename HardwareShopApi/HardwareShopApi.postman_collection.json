@@ -1,0 +1,221 @@
+{
+  "info": {
+    "_postman_id": "6b1f0f0e-5a5e-4c1e-9a52-4a7d8c3e9b01",
+    "name": "HardwareShopApi Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "shopadmin", "type": "string" },
+      { "key": "password", "value": "Shop@123", "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. POST valid product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.collectionVariables.set(\"newProductId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"PVC Elbow 1 inch\",\n  \"category\": \"Plumbing\",\n  \"quantity\": 80,\n  \"unitPrice\": 45\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8085/api/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "products"]
+        }
+      }
+    },
+    {
+      "name": "2. GET all products",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/api/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "products"]
+        }
+      }
+    },
+    {
+      "name": "3. PUT new product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"PVC Elbow 1 inch\",\n  \"category\": \"Plumbing\",\n  \"quantity\": 80,\n  \"unitPrice\": 50\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8085/api/products/{{newProductId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "products", "{{newProductId}}"]
+        }
+      }
+    },
+    {
+      "name": "4. DELETE new product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 204\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/api/products/{{newProductId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "products", "{{newProductId}}"]
+        }
+      }
+    },
+    {
+      "name": "5. POST invalid product (unit price 0)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 400\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"Test Item\",\n  \"category\": \"Tools\",\n  \"quantity\": 10,\n  \"unitPrice\": 0\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8085/api/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "products"]
+        }
+      }
+    },
+    {
+      "name": "6. GET with allowed Origin (8086)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Access-Control-Allow-Origin equals the allowed origin\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Access-Control-Allow-Origin\")).to.eql(\"http://localhost:8086\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Origin", "value": "http://localhost:8086" }],
+        "url": {
+          "raw": "http://localhost:8085/api/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "products"]
+        }
+      }
+    },
+    {
+      "name": "7. GET with blocked Origin (9999)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status is 403\", function () {",
+              "    pm.response.to.have.status(403);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Origin", "value": "http://localhost:9999" }],
+        "url": {
+          "raw": "http://localhost:8085/api/products",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8085",
+          "path": ["api", "products"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "newProductId", "value": "" }
+  ]
+}

@@ -1,0 +1,19 @@
+SESSION 4 TESTS - HardwareShopApi (http://localhost:8085)
+=========================================================
+This file is a TEMPLATE. Run each request in Postman, then replace every
+"ACTUAL" with the status code you really got. Fix any mismatch before submitting.
+
+Valid body used for the POST tests:
+{"productName":"Hacksaw","category":"Tools","quantity":25,"unitPrice":380}
+
+  #  Request                                          Expected   ACTUAL
+  1  GET /api/products, no login                        200      ____
+  2  POST /api/products, valid body, no login           401      ____
+  3  POST /api/products, valid body, wrong password     401      ____
+  4  POST /api/products, valid body, shopadmin          201      ____
+  5  POST /api/products, shopadmin, blank productName   400      ____
+  6  DELETE /api/products/1, no login                   401      ____
+
+Login: Postman > Authorization tab > Basic Auth
+  username: shopadmin
+  password: Shop@123  (practice-only, set in application.properties)

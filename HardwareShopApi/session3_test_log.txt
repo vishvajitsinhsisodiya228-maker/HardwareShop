@@ -1,0 +1,27 @@
+SESSION 3 TEST LOG - HardwareShopApi (http://localhost:8085)
+=============================================================
+This file is a TEMPLATE. Run each request in Postman, then replace every
+"ACTUAL" with the status code you really got and paste the final JSON list
+at the bottom. Add the 6 products with POST using Basic Auth (shopadmin).
+
+Step 1 - add 6 products (unit price 20 to 2500, quantity 10 to 200)
+  Request                                                    Expected   ACTUAL
+  POST /api/products  Hammer, Tools, qty 60, price 320         201      ____
+  POST /api/products  Screwdriver Set, Tools, qty 100, 450     201      ____
+  POST /api/products  Wall Paint 4L, Paint, qty 35, 2150       201      ____
+  POST /api/products  Paint Brush 2in, Paint, qty 150, 20      201      ____
+  POST /api/products  CPVC Pipe 1in, Plumbing, qty 120, 185    201      ____
+  POST /api/products  Tap Valve, Plumbing, qty 40, 260         201      ____
+
+Step 2 - sell stock from 2 products (use the real ids you got)
+  PUT /api/products/{id}/sell/5     (stock is enough)          200      ____
+  PUT /api/products/{id2}/sell/10   (stock is enough)          200      ____
+
+Step 3 - one sale larger than the stock
+  PUT /api/products/{id}/sell/9999                             409      ____
+
+Step 4 - restart the app, then:
+  GET /api/products                                            200      ____
+
+Final JSON list returned by GET /api/products after the restart:
+(paste here)
